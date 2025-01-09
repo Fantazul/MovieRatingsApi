@@ -26,7 +26,11 @@ public class MovieRepository : IMovieRepository
     public Task<bool> UpdateAsync(Movie movie)
     {
         var movieIndex = _movies.FindIndex(x => x.Id == movie.Id);
-        return Task.FromResult(movieIndex != -1);
+        if (movieIndex == -1)
+            return Task.FromResult(false);
+        
+        _movies[movieIndex] = movie;
+        return Task.FromResult(true);
     }
 
     public Task<bool> DeleteByIdAsync(Guid id)
