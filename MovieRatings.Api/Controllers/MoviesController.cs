@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using MovieRatings.Api.Mappers;
 using MovieRatings.Application.Models;
 using MovieRatings.Application.Repositories;
@@ -17,19 +16,27 @@ public class MoviesController(IMovieRepository movieRepository) : ControllerBase
         var movie = request.MapToMovie();
         var success = await movieRepository.CreateAsync(movie);
         var movieResponse = movie.MapToResponse();
-        return CreatedAtAction(nameof(GetMovieById), new { id = movieResponse.Id }, movieResponse);
+        return CreatedAtAction(nameof(GetMovieById), new { idOrSlug = movieResponse.Id }, movieResponse);
     }
 
     [HttpGet]
     [Route(ApiEndpoints.Movies.Get)]
-    public async Task<IActionResult> GetMovieById([FromRoute] Guid id)
+    public async Task<IActionResult> GetMovieById([FromRoute] string idOrSlug)
     {
-        var movie = await movieRepository.GetByIdAsync(id);
+        Movie? movie;
+        if (Guid.TryParse(idOrSlug, out var id))
+        {
+            movie = await movieRepository.GetByIdAsync(id);
+        }
+        else
+        {
+            movie = await movieRepository.GetBySlugAsync(idOrSlug);
+        }
+     
         if (movie is null)
         {
             return NotFound();
         }
-
         return Ok(movie.MapToResponse());
     }
 
