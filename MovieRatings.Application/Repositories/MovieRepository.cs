@@ -5,7 +5,7 @@ namespace MovieRatings.Application.Repositories;
 public class MovieRepository : IMovieRepository
 {
     private readonly List<Movie> _movies = new();
-    
+
     public Task<Movie?> GetByIdAsync(Guid id)
     {
         var movie = _movies.FirstOrDefault(x => x.Id == id);
@@ -34,7 +34,7 @@ public class MovieRepository : IMovieRepository
         var movieIndex = _movies.FindIndex(x => x.Id == movie.Id);
         if (movieIndex == -1)
             return Task.FromResult(false);
-        
+
         _movies[movieIndex] = movie;
         return Task.FromResult(true);
     }
@@ -42,9 +42,9 @@ public class MovieRepository : IMovieRepository
     public Task<bool> DeleteByIdAsync(Guid id)
     {
         var indexToDelete = _movies.FindIndex(m => m.Id == id);
-        if (indexToDelete == -1) 
+        if (indexToDelete == -1)
             return Task.FromResult(false);
-        
+
         _movies.RemoveAt(indexToDelete);
         return Task.FromResult(true);
     }

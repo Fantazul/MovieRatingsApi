@@ -11,8 +11,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\MovieRatings.Application\MovieRatings.Application.csproj" />
-      <ProjectReference Include="..\MovieRatings.Contracts\MovieRatings.Contracts.csproj" />
+        <ProjectReference Include="..\MovieRatings.Application\MovieRatings.Application.csproj"/>
+        <ProjectReference Include="..\MovieRatings.Contracts\MovieRatings.Contracts.csproj"/>
     </ItemGroup>
 
 </Project>

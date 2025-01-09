@@ -25,18 +25,11 @@ public class MoviesController(IMovieRepository movieRepository) : ControllerBase
     {
         Movie? movie;
         if (Guid.TryParse(idOrSlug, out var id))
-        {
             movie = await movieRepository.GetByIdAsync(id);
-        }
         else
-        {
             movie = await movieRepository.GetBySlugAsync(idOrSlug);
-        }
-     
-        if (movie is null)
-        {
-            return NotFound();
-        }
+
+        if (movie is null) return NotFound();
         return Ok(movie.MapToResponse());
     }
 
@@ -54,10 +47,7 @@ public class MoviesController(IMovieRepository movieRepository) : ControllerBase
     {
         var movie = updateMovieRequest.MapToMovie(id);
         var movieUpdated = await movieRepository.UpdateAsync(movie);
-        if (!movieUpdated)
-        {
-            return NotFound();
-        }
+        if (!movieUpdated) return NotFound();
 
         return Ok(movie.MapToResponse());
     }
